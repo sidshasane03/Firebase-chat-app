@@ -1,8 +1,30 @@
+:root {
+  --bg-color: #ffffff;
+  --text-color: #333333;
+  --container-bg: #ffffff;
+  --message-bg: #f8f9fa;
+  --border-color: #eaecef;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] {
+  --bg-color: #1a1a1a;
+  --text-color: #ffffff;
+  --container-bg: #2d2d2d;
+  --message-bg: #363636;
+  --border-color: #404040;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --sender-bg: rgba(255,255,255,0.15);
+  --sender-color: rgba(255,255,255,0.9);
+}
+
 .App {
   max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 header {
@@ -11,9 +33,42 @@ header {
   align-items: center;
   margin-bottom: 30px;
   padding: 15px;
-  background: #ffffff;
+  background: var(--container-bg);
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px var(--shadow-color);
+  color: var(--text-color);
+}
+
+.theme-toggle {
+  position: absolute;
+  right: 30px;
+  top: 20px;
+  padding: 8px 16px;
+  background-color: var(--message-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+.theme-toggle:hover {
+  background-color: var(--container-bg);
+  transform: translateY(-1px);
+}
+
+.theme-toggle::before {
+  content: attr(data-icon);
+  font-size: 16px;
 }
 
 .chat-container {
@@ -24,14 +79,14 @@ header {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  background: #ffffff;
+  background: var(--container-bg);
 }
 
 .messages {
   flex: 1;
   padding: 25px;
   overflow-y: auto;
-  background: #f8f9fa;
+  background: var(--message-bg);
 }
 
 .message {
@@ -54,9 +109,9 @@ header {
 }
 
 .message.received {
-  background-color: #ffffff;
+  background-color: var(--container-bg);
   margin-right: auto;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--border-color);
 }
 
 .sender {
@@ -64,7 +119,21 @@ header {
   font-size: 0.85em;
   display: block;
   margin-bottom: 6px;
-  color: #495057;
+  color: #2c3338;  /* Darker color for better contrast on light backgrounds */
+  background-color: rgba(0,0,0,0.08);
+  padding: 2px 8px;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.message.sent .sender {
+  color: rgba(255,255,255,0.95); /* Brighter white for better contrast on blue background */
+  background-color: rgba(255,255,255,0.25); /* Slightly more opaque background */
+}
+
+.message.received .sender {
+  color: var(--sender-color);
+  background-color: var(--sender-bg);
 }
 
 .message-form {
@@ -127,14 +196,14 @@ header {
   max-width: 400px;
   margin: 2rem auto;
   padding: 2rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: var(--container-bg);
+  box-shadow: 0 4px 6px var(--shadow-color);
+  color: var(--text-color);
 }
 
 .auth-title {
   text-align: center;
-  color: #333;
+  color: var(--text-color);
   margin-bottom: 1.5rem;
 }
 
@@ -201,4 +270,94 @@ header {
 
 .sign-out-btn:hover {
   background-color: #bb2d3b;
+}
+
+.auth-divider {
+  text-align: center;
+  margin: 20px 0;
+  position: relative;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 45%;
+  height: 1px;
+  background-color: #e0e0e0;
+}
+
+.auth-divider::before {
+  left: 0;
+}
+
+.auth-divider::after {
+  right: 0;
+}
+
+.auth-divider span {
+  background-color: var(--container-bg);
+  padding: 0 10px;
+  color: var(--text-color);
+  font-size: 14px;
+}
+
+.google-auth-button {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: white;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-bottom: 1rem;
+}
+
+.google-auth-button:hover {
+  background-color: #f5f5f5;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background: var(--container-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.profile-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 12px;
+  object-fit: cover;
+}
+
+.profile-photo-fallback {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 12px;
+  background-color: #0084ff;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-name {
+  font-weight: 600;
+  font-size: 1.1em;
+  color: var(--text-color);
 }

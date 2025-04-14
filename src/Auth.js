@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from './firebase';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth';
+import { auth, googleProvider } from './firebase';
 
 function Auth() {
   const [email, setEmail] = useState('');
@@ -14,6 +14,19 @@ function Auth() {
         await signInWithEmailAndPassword(auth, email, password);
       } else {
         await createUserWithEmailAndPassword(auth, email, password);
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  const signInWithGoogle = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      if (result.user.photoURL) {
+        await updateProfile(auth.currentUser, {
+          photoURL: result.user.photoURL
+        });
       }
     } catch (error) {
       alert(error.message);
@@ -42,6 +55,12 @@ function Auth() {
         />
         <button type="submit" className="auth-button">{isLogin ? 'Login' : 'Sign Up'}</button>
       </form>
+      <div className="auth-divider">
+        <span>OR</span>
+      </div>
+      <button onClick={signInWithGoogle} className="google-auth-button">
+        Sign in with Google
+      </button>
       <button onClick={() => setIsLogin(!isLogin)} className="auth-switch">
         {isLogin ? 'Need an account? Sign Up' : 'Already have an account? Login'}
       </button>

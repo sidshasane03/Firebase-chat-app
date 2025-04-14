@@ -6,6 +6,7 @@ function Chat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef(null);
+  const user = auth.currentUser;
 
   useEffect(() => {
     const q = query(collection(db, 'messages'), orderBy('timestamp'));
@@ -41,13 +42,31 @@ function Chat() {
 
   return (
     <div className="chat-container">
+      <div className="chat-header">
+        {user.photoURL ? (
+          <img 
+            src={user.photoURL} 
+            alt="Profile" 
+            className="profile-photo"
+          />
+        ) : (
+          <div className="profile-photo-fallback">
+            {user.email[0].toUpperCase()}
+          </div>
+        )}
+        <div className="profile-info">
+          <span className="profile-name">{user.displayName || user.email.split('@')[0]}</span>
+        </div>
+      </div>
       <div className="messages">
         {messages.map((message) => (
           <div
             key={message.id}
             className={`message ${message.uid === auth.currentUser?.uid ? 'sent' : 'received'}`}
           >
-            <span className="sender">{message.displayName}</span>
+            <span className={`sender ${message.uid === auth.currentUser?.uid ? 'sent' : ''}`}>
+              {message.displayName}
+            </span>
             <p>{message.text}</p>
           </div>
         ))}
