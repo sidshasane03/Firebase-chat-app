@@ -1,5 +1,5 @@
 import { doc, updateDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
-import { db } from './firebase';
+import { db } from './firebaseConfig';
 
 /**
  * Mark a message as delivered
